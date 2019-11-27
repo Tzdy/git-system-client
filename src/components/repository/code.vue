@@ -41,8 +41,7 @@ export default {
   },
   methods: {
     enterClick(e) {
-      //存在
-
+      //存在tree
       if (this.$route.path.search("tree") != -1) {
         this.$router.push({
           path: this.$route.path.split("/").pop() + "/" + e.file
@@ -52,7 +51,10 @@ export default {
           path: this.$route.path.split("/").pop() + "/tree/" + e.file
         });
       }
-
+      /**
+       * path : id/repo/tree/filename
+       * data.data: [ {file : 'filename'} ] 
+       */
       axios.get(this.$route.path).then(data => {
         this.file = data.data;
       });
