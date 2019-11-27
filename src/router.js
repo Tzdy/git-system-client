@@ -11,7 +11,11 @@ export default [
         component:repository,
         children:[
             {
-                path:'*'
+                path:':options',
+                
+            },
+            {
+                path:'tree/*'
             }
         ]   
     },

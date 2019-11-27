@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import routes from './router'
 import VueRouter from 'vue-router'
-
+require('./mock/index.js')
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './plugins/element.js'

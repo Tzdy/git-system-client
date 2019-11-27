@@ -9,7 +9,7 @@
       </el-menu>
     </div>
     <div>
-      <el-table :data="file" @cell-click="print">
+      <el-table :data="file" @cell-click="enterClick">
         <el-table-column prop="file"></el-table-column>
       </el-table>
     </div>
@@ -29,71 +29,45 @@
     }
 
 */
-
+import axios from "axios";
 export default {
   data() {
     return {
       title: "git-system",
       tag: ["javascript", "css", "html"],
       activeIndex: "1",
-      ajax: {
-        "app.js": null,
-        file: {
-          ofile: {
-            "config.js": null
-          }
-        }
-      },
-      file: [],
-      file_index: "",
-      //当前
-      now_file: []
+      file: []
     };
   },
   methods: {
-    print(e) {
-      if (this.ajax[e.file]) {
-        this.$router.push({ path: this.now_file[this.now_file.length-1] + "/" + e.file });
-        this.file = [];
-        Object.keys(this.ajax[e.file]).forEach(item => {
-          this.file.push({
-            file: item
-          });
+    enterClick(e) {
+      //存在
+
+      if (this.$route.path.search("tree") != -1) {
+        this.$router.push({
+          path: this.$route.path.split("/").pop() + "/" + e.file
         });
-        this.now_file.push(e.file);
-      } else {
-        if (this.now_file[this.now_file.length-1] != e.file) {
-          this.$router.push({ path: this.now_file[this.now_file.length-1] + "/" + e.file });
-          this.now_file.push( e.file);
-          console.log(e.file);
-        }
+      }else{
+        this.$router.push({
+          path: this.$route.path.split("/").pop() + "/tree/" + e.file
+        });
       }
+
+      axios.get(this.$route.path).then(data => {
+        this.file = data.data;
+      });
     }
   },
   mounted() {
-    this.now_file.push(this.$route.params.repo);
-    let fileArr = Object.keys(this.ajax);
-    fileArr.forEach(item => {
-      this.file.push({
-        file: item
+    
+    //进入主仓库初始化
+    axios
+      .get("/" + this.$route.params.id + "/" + this.$route.params.repo)
+      .then(data => {
+        this.file = data.data;
       });
-    });
   },
-  beforeCreate() {
-    let co_obj = this.ajax;
-    let path_arr = this.$route.params.pathMatch;
-    if (Array.isArray(path_arr)) path_arr = path_arr.split("/");
-    else return;
-    try {
-      for (let i = 0; i < path_arr.length; i++) {
-        if (path_arr[i].length != 0) {
-          co_obj = co_obj[path_arr[i]];
-        }
-      }
-    } catch (e) {
-      alert("无效地址");
-    }
-  }
+  
 };
 </script>
 

@@ -11,7 +11,9 @@
         </div>
         <div>
           <el-tabs v-model="activeName">
-            <el-tab-pane label="用户管理" name="first"><code-area></code-area></el-tab-pane>
+            <el-tab-pane label="用户管理" name="first">
+              <code-area></code-area>
+            </el-tab-pane>
             <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
             <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
             <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
@@ -23,17 +25,17 @@
 </template>
 
 <script>
-import codeArea from '../components/repository/code';
-
+import codeArea from "../components/repository/code";
+// import axios from "axios";
 export default {
   data() {
     return {
       breadcrumb: [],
       activeName: "first",
-      repo:''
+      repo: "",
     };
   },
-  components:{
+  components: {
     codeArea
   },
   mounted() {
@@ -48,7 +50,17 @@ export default {
       };
       this.breadcrumb.push(obj);
     }
-   
+
+    //获取子组件codefile中的文件列表
+    
+  },
+  beforeMount() {
+    
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    console.log("update", to);
+    next();
   }
 };
 </script>
