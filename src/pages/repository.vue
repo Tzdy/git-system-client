@@ -5,7 +5,8 @@
         <div>
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="item in breadcrumb" :key="item.name">
-              <a :href="item.url">{{ item.name }}</a>
+              <!-- <a :href="item.url">{{ item.name }}</a> -->
+              <router-link :to="item.url"> {{ item.name }}</router-link>
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -39,23 +40,14 @@ export default {
     codeArea
   },
   mounted() {
-    let path_arr = window.location.pathname.split("/");
-    let str = window.location.origin;
-    //从1开始，因为pathname用/切开后第一项是空。
-    for (let i = 1; i < path_arr.length; i++) {
-      str = str + "/" + path_arr[i];
-      let obj = {
-        url: str,
-        name: path_arr[i]
-      };
-      this.breadcrumb.push(obj);
-    }
-
-    //获取子组件codefile中的文件列表
-    
-  },
-  beforeMount() {
-    
+      this.breadcrumb.push({
+        url:'/' + this.$route.params.id,
+        name:this.$route.params.id
+      })
+      this.breadcrumb.push({
+        url:'',
+        name:this.$route.params.repo
+      })
   },
 
   beforeRouteUpdate(to, from, next) {
