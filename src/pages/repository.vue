@@ -33,8 +33,7 @@ export default {
     return {
       breadcrumb: [],
       activeName: "first",
-      file_back: [],
-      file_next: []
+      
     };
   },
   components: {
@@ -64,10 +63,19 @@ export default {
         return true;  
     }
     // 测试函数
-    if(judgeGoFroword(from, to))
-      console.log('goforword')
-    else
-      console.log('goback');  
+    if(judgeGoFroword(from, to)){
+      
+      this.$refs.code.file_back.push(this.$refs.code.file);
+      console.log(this.$refs.code.file_back)
+      let next = this.$refs.code.file_next.pop();
+      if(next == undefined || next.length != 0)
+        this.$refs.code.file = next;
+    }
+    else{
+      this.$refs.code.file_next.push(this.$refs.code.file);
+      this.$refs.code.file = this.$refs.code.file_back.pop();
+    }
+        
     next();
   }
 };

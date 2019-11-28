@@ -5,6 +5,15 @@ Mock.mock('/Tsdy/app', 'get', () => {  // 此处会劫持/root/login/checkMember
   return File.file  // 返回模拟数据
 })
 
-Mock.mock(/\/*\/*\/*/, 'get', ()=>{
+Mock.mock('/Tsdy/app/tree/apple', 'get', ()=>{
     return File._1file;
+})
+
+Mock.mock('/Tsdy/app/tree/apple/egg', 'get', ()=>{
+  return File._2file;
+})
+
+
+Mock.mock('/Tsdy/app/tree/apple/egg/asd', 'get', ()=>{
+  return File._3file;
 })

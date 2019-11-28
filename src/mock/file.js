@@ -19,9 +19,30 @@ let _1file = [
         file:'shaby'
     }
 ]
+
+let _2file = [
+    {
+        file:'asd'
+    },
+    {
+        file:'asdqwewq'
+    }
+]
+let _3file = [
+    {
+        file:'1234'
+    },
+    {
+        file:'5654'
+    }
+]
+
+
 let File = {
     file,
-    _1file
+    _1file,
+    _2file,
+    _3file
 }
 
 export default File

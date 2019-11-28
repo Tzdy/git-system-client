@@ -36,11 +36,14 @@ export default {
       title: "git-system",
       tag: ["javascript", "css", "html"],
       activeIndex: "1",
-      file: []
+      file: [],
+      file_back: [],
+      file_next: []
     };
   },
   methods: {
     enterClick(e) {
+      
       //存在tree
       if (this.$route.path.search("tree") != -1) {
         this.$router.push({
@@ -56,6 +59,7 @@ export default {
        * data.data: [ {file : 'filename'} ] 
        */
       axios.get(this.$route.path).then(data => {
+        this.file_next = [];
         this.file = data.data;
       });
     }
