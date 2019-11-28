@@ -11,11 +11,11 @@
           </el-breadcrumb>
         </div>
         <div>
-          <el-tabs v-model="activeName">
-            <el-tab-pane label="用户管理" name="first">
+          <el-tabs v-model="activeName" @tab-click="tabClick">
+            <el-tab-pane :lazy="true" label="用户管理" name="code">
               <code-area ref="code"></code-area>
             </el-tab-pane>
-            <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+            <el-tab-pane :lazy="true" label="配置管理" name="settings"><settings></settings></el-tab-pane>
             <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
             <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
           </el-tabs>
@@ -27,19 +27,29 @@
 
 <script>
 import codeArea from "../components/repository/code";
+import settings from "../components/repository/settings";
 // import axios from "axios";
 export default {
   data() {
     return {
       breadcrumb: [],
-      activeName: "first",
+      activeName: "",
       
     };
   },
+  methods:{
+    tabClick(e) {
+
+      window.location.href = '/' + this.$route.params.id + '/' + this.$route.params.repo  + (e.name=='code'?'':'/' + e.name);
+    }
+  },
   components: {
-    codeArea
+    codeArea,
+    settings
   },
   mounted() {
+    
+    // 仓库面包屑初始化
     this.breadcrumb.push({
       url: "/" + this.$route.params.id,
       name: this.$route.params.id
@@ -48,10 +58,19 @@ export default {
       url: "",
       name: this.$route.params.repo
     });
-    console.log(this.$refs.code.title);
+
+    // 观察是否直接通过网址进入options（Tab），如果进入options就不需要在ajax请求仓库文件
+    if (this.$route.params.options) {
+      this.activeName = 'settings';
+    } else{
+      this.activeName = 'code';
+    }
+
+
   },
 
   beforeRouteUpdate(to, from, next) {
+    
     // 判断是前进还是后退
     function judgeGoFroword(from, to) {
       function filter(item) {
@@ -62,13 +81,12 @@ export default {
       else 
         return true;  
     }
-    // 测试函数
+    // 前进
     if(judgeGoFroword(from, to)){
-      
       this.$refs.code.file_back.push(this.$refs.code.file);
-      console.log(this.$refs.code.file_back)
       let next = this.$refs.code.file_next.pop();
-      if(next == undefined || next.length != 0)
+      //如果next有东西才相当于前进
+      if(next != undefined)
         this.$refs.code.file = next;
     }
     else{
