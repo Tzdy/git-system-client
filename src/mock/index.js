@@ -1,6 +1,9 @@
 import Mock from 'mockjs'
 import File from './repository/file'
 import Settings from './repository/settings'
+Mock.setup({
+  timeout: 2000
+})
 Mock.mock('/Tsdy/app', 'get', () => {  // 此处会劫持/root/login/checkMemberLogin接口，并返回数据
   return File.file  // 返回模拟数据
 })

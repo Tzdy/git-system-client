@@ -1,39 +1,39 @@
 let file = [
     {
-        file:'apple'
+        name:'apple'
     },
     {
-        file:'banana'
+        name:'banana'
     },
     {
-        file:'tomato'
+        name:'tomato'
     }
 ]
 
 
 let _1file = [
     {
-        file:'egg'
+        name:'egg'
     },
     {
-        file:'shaby'
+        name:'shaby'
     }
 ]
 
 let _2file = [
     {
-        file:'asd'
+        name:'asd'
     },
     {
-        file:'asdqwewq'
+        name:'asdqwewq'
     }
 ]
 let _3file = [
     {
-        file:'1234'
+        name:'1234'
     },
     {
-        file:'5654'
+        name:'5654'
     }
 ]
 

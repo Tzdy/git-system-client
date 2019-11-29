@@ -14,7 +14,7 @@
           <el-input class="search" v-model="input" placeholder="请输入内容"></el-input>
           <ul>
             <li v-for="item in repository" :key="item">
-              <router-link :to="item">{{ item }}</router-link>
+              <router-link to="Tsdy/app">{{ item }}</router-link>
             </li>
           </ul>
         </div>
