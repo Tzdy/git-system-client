@@ -1,9 +1,19 @@
 <template>
   <div id="file">
+    <div>
+      <el-button class="file-operate">create file</el-button>
+      <el-button class="file-operate">upload file</el-button>
+      <el-button class="file-operate">find file</el-button>
+      <el-button class="file-operate">history</el-button>
+    </div>
     <el-table :data="file">
       <el-table-column>
         <template slot-scope="scope">
-          <router-link @click.native="click" :to="scope.row.url">{{ scope.row.name }}</router-link>
+          <router-link
+            @click.prevent.native="click"
+            :to="scope.row.url"
+            :append="true"
+          >{{ scope.row.name }}</router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -34,61 +44,54 @@ export default {
       isDisable: false
     };
   },
+  props: ["displayOption"],
   methods: {
     //点击事件是在beforeRouteUpdate执行之后执行的
-    click() {
-      console.log('click')
-      //通过router-link前进时将前进历史清除，用来区别用户点击前进
-      this.file_next = [];
-    }
+    click() {}
   },
   mounted() {
-    //如果通过网址进来就能直接识别到this.$route.params.pathMatch反之就是从/Tsdy/app一步一步点过来的
-    //主要是在/Tsdy/app时的初始化有区别
-    if (!this.$route.params.pathMatch)
-      this.prefix = this.$route.params.repo + "/tree/";
-    else this.prefix = this.$route.params.pathMatch.split("/").pop() + "/";
+    //如果在url中找到tree就不显示option
+    if (this.$route.path.search("tree") != -1) this.displayOption(false);
     //初始化
     axios.get(this.$route.path).then(data => {
       let arr = [];
       data.data.forEach(item => {
         arr.push({
           name: item.name,
-          url: this.prefix + item.name
+          url: "tree/" + item.name
         });
       });
       this.file = arr;
     });
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('routerUpdate')
+    if (to.path.search("options") != -1) {
+      next();
+      return;
+    }
+    console.log("routerUpdate");
     if (this.isDisable) {
       next(false);
       return;
     }
+    this.isDisable = true;
 
+    if (to.path.search("tree") != -1) this.displayOption(false);
+    else this.displayOption(true);
+
+    let arr = [];
+    //前进刷新，后退不刷新
     if (judgeGoFroword(from, to)) {
-      if(this.file_next.length){
-        this.file_back.push(this.file);
-        this.file = this.file_next.pop();
-        next()
-        return;
-      }
-        
-      this.isDisable = true;
-      if (to.params.pathMatch)
-        this.prefix = to.params.pathMatch.split("/").pop() + "/";
       axios
         .get(to.path)
         .then(data => {
-          let arr = [];
-          this.file_back.push(this.file);
           data.data.forEach(item => {
             arr.push({
               name: item.name,
-              url: this.prefix + item.name
+              url: item.name
             });
           });
+          this.file_back.push(this.file);
           this.file = arr;
           this.isDisable = false;
         })
@@ -98,11 +101,18 @@ export default {
     } else {
       this.file_next.push(this.file);
       this.file = this.file_back.pop();
+      this.isDisable = false;
     }
+
     next();
   }
 };
 </script>
 
-<style>
+<style scoped>
+
+  #file .file-operate{
+  float: right;
+  margin-top: 1rem;
+}
 </style>
