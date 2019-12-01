@@ -11,11 +11,11 @@
           </el-breadcrumb>
         </div>
         <div>
-          <el-tabs v-model="activeName">
-            <el-tab-pane :lazy="true" label="用户管理" name="code"></el-tab-pane>
-            <el-tab-pane :lazy="true" label="配置管理" name="settings"></el-tab-pane>
-            <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+          <el-tabs v-model="activeName" type="card" @tab-click="tabClick">
+            <el-tab-pane label="code" name=""></el-tab-pane>
+            <el-tab-pane label="settings" name="settings"></el-tab-pane>
+            <el-tab-pane label="角色管理" name="third"></el-tab-pane>
+            <el-tab-pane label="定时任务补偿" name="fourth"></el-tab-pane>
           </el-tabs>
         </div>
         <router-view></router-view>
@@ -35,6 +35,11 @@ export default {
       activeName: ""
     };
   },
+  methods:{
+    tabClick(tab) {
+      window.location.href = '/' + this.$route.params.id + '/' + this.$route.params.repo + (tab.name==""?"":'/'+tab.name);
+    }
+  },
   mounted() {
     // 仓库面包屑初始化
     this.breadcrumb.push({
@@ -45,6 +50,13 @@ export default {
       url: "",
       name: this.$route.params.repo
     });
+    //tab初始化
+    if(this.$route.path.split('/')[3] == 'settings')
+      this.activeName = 'settings';
+  },
+  beforeRouteUpdate(to, from ,next) {
+
+    next()
   }
 };
 </script>
