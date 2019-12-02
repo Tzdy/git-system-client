@@ -1,4 +1,5 @@
 const index = r => require.ensure([], () => r(require('./pages/index')), 'index')
+const login = r => require.ensure([], () => r(require('./pages/login')), 'login')
 const home = r => require.ensure([], () => r(require('./pages/home')), 'home')
 const main_home = r => require.ensure([], () => r(require('./components/home/main-home')), 'main_home')
 const repository = r => require.ensure([], () => r(require('./pages/repository')), 'repository')
@@ -12,6 +13,10 @@ export default [
     {
         path:'',
         component:index
+    },
+    {
+        path:'/login',
+        component:login
     },
     {
         path:'/:id',
