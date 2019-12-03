@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      //加载遮盖登录框
       let loading = Loading.service({
         target: ".login"
       });
