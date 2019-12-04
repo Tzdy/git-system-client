@@ -7,6 +7,7 @@
 <script>
 import loginScreen from '../components/login/login-screen';
 import axios from 'axios';
+axios.defaults.withCredentials = true
 
 export default {
   components:{
@@ -26,10 +27,10 @@ export default {
     // };
     // xhr.send(JSON.stringify({ token: getCookie("token") }));
     axios({
-      url:'/judge-token',
+      url:'http://localhost:3000/judge-token',
       method:'POST',
-      xsrfCookieName:'XSRF-TOKEN',
-      xsrfHeaderName:'X-XSRF-TOKEN',
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
       data:{
 
       }
