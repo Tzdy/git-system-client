@@ -47,7 +47,7 @@ export default {
           loading.close();
           //请求成功后会拿到一个令牌，反之为undefined
           if (data.data.token) {
-            document.cookie = "token=" + data.data.token;
+            document.cookie = "XSRF-TOKEN=" + data.data.token;
             this.$router.replace(data.data.username);
           } else {
             this.$alert(data.data.code, "error");

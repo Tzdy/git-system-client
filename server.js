@@ -12,8 +12,16 @@ mock.all('*', function(req , res, next) {
 })
 
 mock.post('/judge-token',body(), function(req, res){
-    console.log(req.headers);
-    res.send(JSON.stringify(req.headers))
+    if(req.get('x-xsrf-token') == 'qwertyuiop'){
+
+        res.send(JSON.stringify({
+            username:'Tsdy'
+        }))
+    }else{
+        res.send(JSON.stringify({
+            code:'没有登陆'
+        }))
+    }
 })
 
 mock.listen(3000)

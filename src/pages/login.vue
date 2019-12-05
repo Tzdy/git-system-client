@@ -14,38 +14,23 @@ export default {
     loginScreen
   },
   beforeRouteEnter(to, from, next) {
-    //同步的判断是否已经处于登陆状态
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("POST", "/judge-token", false);
-    // xhr.onload = () => {
-    //   const { username } = JSON.parse(xhr.response);
-    //   if (username) {
-    //       window.location.href = "/" + username;
-    //       return;
-    //   }
-    //   next();
-    // };
-    // xhr.send(JSON.stringify({ token: getCookie("token") }));
+    //类同步的判断是否已经处于登陆状态
     axios({
       url:'http://localhost:3000/judge-token',
       method:'POST',
       xsrfCookieName: 'XSRF-TOKEN',
       xsrfHeaderName: 'X-XSRF-TOKEN',
-      data:{
-
-      }
     })
     .then(data => {
-        // const { username } = JSON.parse(data.data);
-        // if(username){
-        //   window.location.href = "/" + username;
-        //   return;
-        // }
-        console.log(data)
+        //传回对应username等于登陆状态存在
+        if(data.data.username){
+          window.location.href = '/' + data.data.username;
+          next(false);
+        }
         next()
     })
-    .catch(err => {
-      this.$alert(err, 'error');
+    .catch((err) => {
+      console.log(err);
     })
 
   }
